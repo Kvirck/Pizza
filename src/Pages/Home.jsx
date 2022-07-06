@@ -4,8 +4,10 @@ import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination/Pagination';
+import { SerachContext } from './../App';
 
-const Home = ({ searchValue, setSearchValue }) => {
+const Home = () => {
+    const {searchValue}=React.useContext(SerachContext)
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [categoriesId, setCategoriesID] = React.useState(0)
@@ -20,8 +22,8 @@ const Home = ({ searchValue, setSearchValue }) => {
         const search = searchValue ? `&search=${searchValue}` : ""
         let page = currentPage
         const limit = 4
-        fetch(`https://62c55701134fa108c24eec50.mockapi.io/items${categories}${sort}&order=${sortType.order}${search}
-        &page=${page}&limit=${limit}`
+        fetch(`https://62c55701134fa108c24eec50.mockapi.io/items${categories}${sort}&order=${sortType.order}
+        &page=${page}&limit=${limit}${search}`
         )
             .then((res) => res.json())
             .then((json) => {
@@ -31,7 +33,7 @@ const Home = ({ searchValue, setSearchValue }) => {
                 }, 500);
             });
         window.scrollTo(0, 0)
-    }, [categoriesId, sortType, searchValue,currentPage]);
+    }, [categoriesId, sortType, searchValue, currentPage]);
     const pizzas = items.map((item) => <PizzaBlock key={item.id} {...item} />)
     const skeletons = [...new Array(6)].map((_, i) => <Skeleton key={i} />)
     return (
@@ -44,7 +46,7 @@ const Home = ({ searchValue, setSearchValue }) => {
             <div className="content__items">
                 {isLoading ? skeletons : pizzas}
             </div>
-            <Pagination onChangePage = {number=>setCurrentPage(number)} />
+            <Pagination onChangePage={number => setCurrentPage(number)} />
         </div>
 
     )

@@ -1,7 +1,10 @@
 import React from 'react'
 import style from './Search.module.scss'
 import searchSVG from "../../assets/img/search.svg"
-export const Serach = ({ searchValue, setSearchValue }) => {
+import { SerachContext } from './../../App';
+export const Serach = () => {
+
+    const {searchValue, setSearchValue}=React.useContext(SerachContext)
     return (
         <div className={style.root}>
             < img className={style.icon} src={searchSVG} alt="img" />
